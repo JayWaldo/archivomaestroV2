@@ -1,0 +1,81 @@
+nav{
+    background-color: #003255;
+    position: fixed;
+    width: 180px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+nav img{
+    width: 70%;
+    margin: 26px auto 0 auto;
+}
+ul{
+    margin: 26px 0 0 0;
+    list-style: none;
+    font-size: 16px;
+}
+li{
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    height: 42px;
+    transition-duration: .5s;
+}
+li:hover, li.active{
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    padding-left: calc((100% / 2) - 30%);
+    transition: .5s;
+}
+a{
+    color: white;
+    text-decoration: none;
+    transition: .5s;
+}
+li:hover a, a:hover, a.active-link{
+    color: black;
+    transition: .5s;
+}
+i{
+    margin-right: 12px;
+}
+section{
+    width: calc(100vw - 180px);
+    padding: 24px;
+    margin-left: 180px;
+}
+.bottomWrapper{
+    position: absolute;
+    bottom: 24px;
+    margin: 0 12px;
+    width: -webkit-fill-available;
+    border-top: 1px solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
+}
+.userInfo{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    margin: 12px 0;
+}
+.userInfo i{
+    grid-column: 1;
+    grid-row: span 2;
+    align-self: center;
+    font-size: 24px;
+}
+.userInfo p{
+    font-size: 10px;
+}
+.userInfo .logOut{
+    grid-column: span 2;
+    border: none;
+    border-radius: 2px;
+    margin-top: 2px;
+    cursor: pointer;
+}

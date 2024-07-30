@@ -1,0 +1,28 @@
+<nav>
+    <img src="/assets/Mega_blanco.png" alt="Metrocarrier">
+    <ul>
+        <li
+            *ngFor="let item of navList; let i = index"
+            [ngClass] ="{'active' : selectedItem === item.route}"
+            (click)= "selectItem(item.route)">
+            <a 
+            [routerLink]="item.route"
+            routerLinkActive="active-link"
+            [title]="item.title" >
+                <i [class]="item.icon"></i>{{item.title}}
+            </a>
+        </li>
+    </ul>
+    <div class="bottomWrapper" *ngIf="currentUser">
+        <div class="userInfo" >
+            <i class="fas fa-id-card"></i>
+            <p>{{currentUser.nombre}}</p>
+            <p>{{currentUser.correo}}</p>
+            <button class="logOut" (click)="logOut()">Salir</button>
+        </div>
+    </div>
+</nav>
+<section class="dashboard">
+    <router-outlet @fadeInOut>
+    </router-outlet>
+</section>

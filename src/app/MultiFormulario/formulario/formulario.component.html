@@ -1,0 +1,32 @@
+<div class="avance">
+    <div *ngFor="let sect of sectionsForm; let i = index">
+        <span [ngClass]="[sect.checked ? 'selected' : '']" (click)="goToSection(i)">{{i + 1}}</span>
+        {{sect.title}}
+    </div>
+</div>
+<div *ngIf="showPopUp" class="guardadoView" @fadeInOutEase>
+    <p>Guardado</p>
+    <i class="fas fa-check"></i>
+</div>
+<div *ngIf="currentPart === 1" class="container" @fadeInOut>
+    <app-captacion [data]="sectionsForm[0].dataComp"></app-captacion>
+</div>
+
+ <div *ngIf="currentPart === 2" class="container" @fadeInOut>
+    <app-filtro [data]="sectionsForm[1].dataComp"></app-filtro>
+</div>
+
+<div *ngIf="currentPart === 3" class="container" @fadeInOut>
+    <app-entrevista [data]="sectionsForm[2].dataComp"></app-entrevista>
+</div>
+
+<div *ngIf="currentPart === 4" class="container" @fadeInOut>
+    <app-evaluaciones [data]="sectionsForm[3].dataComp"></app-evaluaciones>
+</div>
+
+<div class="buttons-container">
+    <button *ngIf="currentPart > 1" (click) = "btnPrev()" @fadeInOut>Anterior</button>
+    <button class="guardar" (click) = "saveCurrentSection()" @fadeInOut>Guardar</button>
+    <button *ngIf="currentPart < 4" (click) = "btnNext()" @fadeInOut>Siguiente</button>
+    <button *ngIf="currentPart === 4" (click) = "sendData()" @fadeInOut>Enviar</button>
+</div>

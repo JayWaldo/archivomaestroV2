@@ -1,0 +1,39 @@
+<h1>{{title}}</h1>
+
+<form [formGroup]="entrevistaForm">
+  <div class="input-container">
+
+    <div class="select-container">
+      <label for="FechaSegundaEntrevista" class="labelPicker">Fecha Segunda Entrevista</label>
+      <div class="datePickerContainer">
+        <input id="FechaSegundaEntrevista" type="text" matInput [matDatepicker]="pickerdaEntrevista" formControlName="FechaSegundaEntrevista">
+        <mat-datepicker-toggle matSuffix [for]="pickerdaEntrevista"></mat-datepicker-toggle>
+        <mat-datepicker #pickerdaEntrevista></mat-datepicker>
+      </div>
+    </div>
+
+    <div class="select-container">Estatus Segunda Entrevista
+      <select id="segundaEntrevista" formControlName="EstatusSegundaEntrevista">
+        <option value="" disabled [selected]="true">Seleccione una opción</option>
+        <option *ngFor="let item of getOpciones('estatusEntrevista')" [value]="item">{{item}}</option>
+      </select>
+      <div class="angle-container">
+        <i class="fas fa-angle-down"></i>
+      </div>
+    </div>
+
+    <div class="select-container">Tipo de Entrevista
+      <select id="TipoSegundaEntrevista" formControlName="TipoSegundaEntrevista">
+        <option value="" disabled [selected]="true">Seleccione una opción</option>
+        <option *ngFor="let item of getOpciones('tipoEntrevista')" [value]="item">{{item}}</option>
+      </select>
+      <div class="angle-container">
+        <i class="fas fa-angle-down"></i>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+
+</form>

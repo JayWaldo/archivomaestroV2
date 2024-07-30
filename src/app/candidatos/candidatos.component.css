@@ -1,0 +1,113 @@
+.title{
+    padding-bottom: 12px;
+    border-bottom: 1px solid #CCCCCC;
+}
+h2{
+    margin-top: 12px;
+}
+.optWrapper{
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+    column-gap: 16px;
+}
+button{
+    width: 150px;
+    height: 32px;
+    border: none;
+    background-color: #6caa0f;
+    color: white;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: .4s;
+}
+button:hover{
+    background-color: #93cc3e;
+    transition: .4s;
+}
+.agregar{
+    display: flex;
+    align-items: center;
+}
+.agregar i{
+    margin: 10px;
+}
+.agregar span{
+    border-right: 1px solid white;
+}
+.pagination{
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px;
+    gap: 12px;
+}
+.pagination button{
+    background: none;
+    color: black;
+    width: 1rem;
+    height: auto;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagination button:hover{
+    background-color: #afadad;
+}
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.page-size-select{
+    display: flex;
+    align-items: center;
+    font-size: .9rem;
+    gap: 12px;
+}
+.deleteMsg{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding-right: 24px;
+    background-color: rgba(255, 255, 255, 0.5); /* Fondo blanco con opacidad del 50% */
+    backdrop-filter: blur(10px); /* Desenfoque de 10px */
+    z-index: 5;
+}
+.deleteMsg .content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+.buttonWrapperMsg{
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+}
+.eliminar{
+    background-color: #c92020;
+    color: white;
+    transition: .4s;
+}
+.eliminar:hover{
+    background-color: #e65151;
+    transition: .4s;
+}
+.cancelar{
+    background-color: #d1930d;
+    color: white;
+    transition: .4s;
+}
+.cancelar:hover{
+    background-color: #f0b12b;
+    transition: .4s;
+}
+.visible{
+    display: flex;
+}

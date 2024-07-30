@@ -1,0 +1,250 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.container{
+    width: 100%;
+}
+.input-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+            
+.input-container label{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+    width: 48%;
+    font-weight: 500;
+}
+.input-container label input, .datePickerContainer input {
+    border: none;
+    box-shadow: 0px 0px 1px 1px #ECECEC;
+    padding: 18px;
+    border-radius: 2px;
+    transition: 0.5s;
+}
+.input-container label input:focus-visible, .input-container label input:hover,
+.datePickerContainer input:hover, .datePickerContainer input:focus-visible{
+    outline: none;
+    box-shadow: 0 0 2px 2px #D3D3D3;
+    transition-duration: .4s;
+}
+fieldset {
+    width: 48%;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+fieldset legend{
+    font-weight: 600;
+    padding: 24px 0;
+}
+.radio-section div{
+    display: flex;
+    column-gap: 6px;
+    cursor: pointer;
+}
+.radio-section div label{
+    margin: 0;
+    font-weight: 400;
+    cursor: pointer;
+
+}
+.select-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    justify-content: space-between;
+    position: relative;
+    width: 48%;
+    font-weight: 500;
+}
+.select-container select{
+    outline: none;
+    border: none;
+    box-shadow: 0px 0px 1px 1px #ECECEC;
+    margin-top: 10px;
+    padding: 18px;
+    border-radius: 2px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.select-container .angle-container{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    color: #D3D3D3;
+    pointer-events: none;
+    transition-duration: .5s;
+}
+select:focus, select:hover{
+    outline: none;
+    box-shadow: 0 0 2px 2px #D3D3D3;
+    transition-duration: .4s;
+}
+select:focus + .angle-container{
+    color: black;
+    transition-duration: .5s;
+}
+.tableContainer{
+    box-shadow: 0px 0px 3px 3px #ECECEC;
+    border-radius: 4px;
+    margin-top: 24px;
+    overflow-y: auto;
+
+}
+.tableContainer::-webkit-scrollbar {
+    height: 6px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    background-color: #D3D3D3;
+    border-radius: 10px;
+    border: none;
+}
+
+.tableContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #9e9b9b;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    background-color: #ECECEC;
+    border-radius: 10px;
+}
+.table {
+    width: 100%;
+    border: 1px solid #ECECEC;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+.table .titles {
+    font-weight: 500;
+    background-color: #003255;
+    color: white;
+}
+
+.table .titles th {
+    padding: 12px;
+    text-align: left;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+.titles th .column-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.table .dataRow td {
+    padding: 6px;
+    border-bottom: 1px solid #ECECEC; /* Añade borde inferior a las celdas */
+}
+.table .dataRow:nth-child(odd){
+    transition: .4s;
+    background-color:  #ffffff;
+}
+.table .dataRow:nth-child(even){
+    transition: .4s;
+    background-color:  #e3f2fd;
+}
+.table .dataRow:hover {
+    cursor: default;
+    background-color: #9ac4e2;
+    transition: .4s;
+}
+.table .buttonContainer {
+    text-align: center;
+}
+.table .buttonContainer .buttonWrapper{
+    display: flex;
+}
+.table .buttonContainer button {
+    margin: 0 4px;
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.table .buttonContainer button{
+    width: auto;
+    height: auto;
+}
+.table .buttonContainer .delete{
+    color: #c92020;
+    transition: .4s;
+}
+.table .buttonContainer .edit{
+    color: #6caa0f;
+    transition: .4s;
+}
+.table .buttonContainer .excel{
+    color: #487406;
+    transition: .4s;
+}
+.table .buttonContainer .excel:hover{
+    color: white;
+    background-color: #8fdd1a;
+    transition: .4s;
+}
+.table .buttonContainer .delete:hover{
+    color: white;
+    background-color: #c92020;
+    transition: .4s;
+}
+.table tr td label{
+    margin: 0;
+    width: 98%;
+}
+.table tr td label input {
+    padding: 9px;
+}
+
+.table tr td .agregar{
+    background-color: #6caa0f;
+    transition: .4s;
+    padding: 8px;
+}
+.table tr td .agregar:hover, .table .buttonContainer .edit:hover{
+    color: white;
+    background-color: #93cc3e;
+    transition: .4s;
+}
+.datePickerContainer{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+.datePickerContainer input{
+    width: 100%;
+}
+.select-container .labelPicker{
+    width: 100%;
+    margin: 0;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.error select, .input-container .error input{
+    box-shadow: 0px 0px 1px 1px #c92020;
+}

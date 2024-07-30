@@ -1,0 +1,59 @@
+<h1>{{title}}</h1>
+
+<form [formGroup]="filtroForm">
+  <div class="input-container">
+    <label for="age">Edad del Candidato
+        <input id="age" type="number" formControlName="edad">
+    </label>
+
+    <div class="select-container">Escolaridad
+        <select formControlName="escolaridad" id="escolaridad">
+          <option value="" disabled selected>Seleccione una opción</option>
+          <option *ngFor="let item of escolaridadList" [value]="item">{{item}}</option>
+        </select>
+        <div class="angle-container">
+          <i class="fas fa-angle-down"></i>
+        </div>
+    </div>
+
+    <div class="select-container">
+        <label for="fechaContacto" class="labelPicker">Fecha de Contacto</label>
+        <div class="datePickerContainer">
+          <input id="fechaContacto" type="text" matInput [matDatepicker]="pickerContacto" formControlName="fechaContacto">
+          <mat-datepicker-toggle matSuffix [for]="pickerContacto"></mat-datepicker-toggle>
+          <mat-datepicker #pickerContacto></mat-datepicker>
+        </div>
+    </div>
+
+    <div class="select-container">Tipo de Candidato
+        <select id="candidato" formControlName="tipoCandidato">
+          <option value="" disabled [selected]="true">Seleccione una opción</option>
+          <option *ngFor="let item of getOpciones('tipoCandidato')" [value]="item">{{item}}</option>
+        </select>
+        <div class="angle-container">
+          <i class="fas fa-angle-down"></i>
+        </div>
+    </div>
+
+    <div class="select-container">Tipo de Entrevista
+        <select id="entrevista" formControlName="tipoEntrevista">
+          <option value="" disabled [selected]="true">Seleccione una opción</option>
+          <option *ngFor="let item of getOpciones('tipoEntrevista')" [value]="item">{{item}}</option>
+        </select>
+        <div class="angle-container">
+          <i class="fas fa-angle-down"></i>
+        </div>
+    </div>
+
+    <div class="select-container">Estatus Primera Entrevista
+        <select id="primerEntrevista" formControlName="estatusPrimerEntrevista">
+          <option value="" disabled [selected]="true">Seleccione una opción</option>
+          <option *ngFor="let item of getOpciones('estatusEntrevista')" [value]="item">{{item}}</option>
+        </select>
+        <div class="angle-container">
+          <i class="fas fa-angle-down"></i>
+        </div>
+    </div>
+
+  </div>
+</form>

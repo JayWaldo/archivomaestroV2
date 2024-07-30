@@ -1,0 +1,71 @@
+<div class="deleteMsg" [ngClass]="{'visible' : areUSure}">
+    <div class="content">
+        <p>Esto eliminara el registro de forma permanente, ¿Desea continuar?</p>
+        <div class="buttonWrapperMsg">
+            <button class="eliminar" (click)="eliminarRegistro()">Si, eliminar</button>
+            <button class="cancelar" (click)="cancelar()">Cancelar</button>
+        </div>
+    </div>
+</div>
+<div @fadeInOut>
+    <h1 class="title">{{title}}</h1>
+</div>
+<div class="contentContainer" @fadeInOut>
+    <h2>Candidatos registrados</h2>
+    <div class="tableContainer" *ngIf="candidatosList.length !== 0">
+        <table class="table">
+            <thead>
+                <tr class="titles">
+                    <th *ngFor="let column of columnNames" (click)="sortData(column)">
+                        <span class="column-header">
+                            {{ column }}
+                            <i *ngIf="sortColumn === column" class="fas" [ngClass]="{
+                                'fa-long-arrow-alt-up': sortDirection === 'asc',
+                                'fa-long-arrow-alt-down': sortDirection === 'desc'
+                            }"></i>
+                        </span>
+                      </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cand of tableData.slice(startIndex(), endIndex()); let i = index" class="dataRow">
+                    <td>{{cand.No}}</td>
+                    <td>{{cand.Id}}</td>
+                    <td>{{cand.Nombre}}</td>
+                    <td>{{cand.Region}}</td>
+                    <td>{{cand.Sistema}}</td>
+                    <td>{{cand.Reclutador}}</td>
+                    <td>{{cand.Progreso}}%</td>
+                    <td>{{cand.Estatus}}</td>
+                    <td class="buttonContainer">
+                        <div class="buttonWrapper">
+                            <button class="edit" title="Editar" (click)="editarRegistro(cand.Id)"><i class="fas fa-pen"></i></button>
+                            <button class="delete" title="Eliminar" (click)="msgEliminar(i)"><i class="fas fa-trash-alt"></i></button>
+                            <button class="excel" title="Exportar a Excel"><i class="fas fa-file-excel"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- paginacion -->
+        <div class="pagination">
+            <div class="page-size-select">
+                <label for="pageSizeSelect">Registros por página</label>
+                <select id="pageSizeSelect" [(ngModel)]="noPaginas">
+                  <option *ngFor="let option of opcionesPagina" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+            <button class="prevBtn" [disabled]="!hasPrevPage()" (click)="prevPage()"><i class="fas fa-caret-left"></i></button>
+            <p>{{currentPagina + 1}}</p>
+            <button class="nextBtn" [disabled]="!hasNextPage()" (click)="nextPage()"><i class="fas fa-caret-right"></i></button>
+        </div>
+    </div>
+
+    <div class="optWrapper" *ngIf="candidatosList.length === 0">
+        <p>Hola {{currentUser?.nombre}}, no tienes registros!</p>
+        <button (click)="goToRegistro()" class="agregar">
+            <span>Agregar nuevo candidato</span><i class="fas fa-plus"></i>
+        </button>
+    </div>
+</div>

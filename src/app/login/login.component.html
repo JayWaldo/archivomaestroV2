@@ -1,0 +1,28 @@
+<div class="inputs" @fadeInOut>
+    <div class="wrapper">
+        <h1 class="title">Iniciar Sesion</h1>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mailContainer">
+                <label for="correo">Correo</label>
+                <input type="mail" id="correo" formControlName="email" placeholder="ejemplo@mail.com">
+                <div *ngIf="submitted && f.email.errors" class="invalid">
+                    <div *ngIf="f.email.errors.required">El correo es requerido.</div>
+                    <div *ngIf="f.email.errors.email">El correo debe ser valido</div>
+                </div>
+            </div>
+            
+            <div class="passwordContainer">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" formControlName="password" id="contrasena" placeholder="*******">
+                <div *ngIf="submitted && f.password.errors" class="invalid">
+                    <div *ngIf="f.password.errors.required">La contraseña es requerida.</div>
+                </div>
+            </div>
+            <button type="submit" [disabled]="loading">Ingresar</button>
+
+            <div *ngIf="error" class="invalid">
+                {{this.error}}
+            </div>
+        </form>
+    </div>
+</div>

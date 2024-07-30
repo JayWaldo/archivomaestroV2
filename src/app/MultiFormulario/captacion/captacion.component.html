@@ -1,0 +1,77 @@
+<h1>{{title}}</h1>
+
+<form [formGroup]="captacionForm">
+    <div class="input-container">
+        <div class="select-container" [ngClass]="{'error': !captacionForm.controls['region'].valid && captacionForm.controls['region'].touched}">Region
+            <select formControlName="region" id="region" (change)="onRegionChange($event)">
+                <option value="" disabled [selected]="true">Seleccione una opción</option>
+                <option *ngFor="let item of regionList" [value]="item.region">{{item.region}}</option>
+            </select>
+            <div class="angle-container">
+                <i class="fas fa-angle-down"></i>
+            </div>
+        </div>
+    
+        <div class="select-container" [ngClass]="{'error': !captacionForm.controls['sistema'].valid && captacionForm.controls['sistema'].touched}">Sistema
+            <select formControlName="sistema" id="sistema">
+                <option value="" disabled [selected]="true">Seleccione una opción</option>
+                <option *ngFor="let sistema of filteredSystems" [value]="sistema">{{sistema}}</option>
+            </select>
+            <div class="angle-container">
+                <i class="fas fa-angle-down"></i>
+            </div>
+        </div>
+
+        <div class="select-container" [ngClass]="{'error': !captacionForm.controls['fuenteCaptacion'].valid && captacionForm.controls['fuenteCaptacion'].touched}">Fuente de Captacion
+            <select formControlName="fuenteCaptacion" id="fuente">
+                <option value="" disabled [selected]="true">Seleccione una opción</option>
+                <option *ngFor="let item of fuentesCaptacion" [value]="item">{{item}}</option>
+            </select>
+            <div class="angle-container">
+                <i class="fas fa-angle-down"></i>
+            </div>
+        </div>
+
+        <label for="responsable" [ngClass]="{'error': !captacionForm.controls['responsable'].valid && captacionForm.controls['responsable'].touched}">Responsable
+            <input id="responsable" type="text" formControlName="responsable">
+        </label>
+
+        <label for="nombreCandidato" [ngClass]="{'error': !captacionForm.controls['nombreCandidato'].valid && captacionForm.controls['nombreCandidato'].touched}">Nombre completo del Candidato
+            <input id="nombreCandidato" type="text" formControlName="nombreCandidato">
+        </label>
+
+        <div class="select-container" [ngClass]="{'error': !captacionForm.controls['genero'].valid && captacionForm.controls['genero'].touched}">Genero
+            <select formControlName="genero" id="genero">
+                <option value="" disabled [selected]="true">Seleccione una opción</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+            </select>
+            <div class="angle-container">
+                <i class="fas fa-angle-down"></i>
+            </div>
+        </div>
+
+        <label for="telefono" [ngClass]="{'error': !captacionForm.controls['telefono'].valid && captacionForm.controls['telefono'].touched}">Telefono de contacto (Solo numeros)
+            <input id="telefono" type="text" formControlName="telefono">
+        </label>
+
+        <div class="select-container" [ngClass]="{'error': !captacionForm.controls['puestoSolicitado'].valid && captacionForm.controls['puestoSolicitado'].touched}">Puesto Solicitado
+            <select formControlName="puestoSolicitado" id="puesto">
+              <option value="" disabled [selected]="true">Seleccione una opción</option>
+              <option *ngFor="let item of vacantes" [value]="item">{{item}}</option>
+            </select>
+            <div class="angle-container">
+              <i class="fas fa-angle-down"></i>
+            </div>
+        </div>
+
+        <div class="select-container">
+            <label for="fechaCaptacion" class="labelPicker">Fecha de Captacion</label>
+            <div class="datePickerContainer">
+              <input id="fechaCaptacion" type="text" matInput [matDatepicker]="fechaCaptacion" formControlName="fechaCaptacion">
+              <mat-datepicker-toggle matSuffix [for]="fechaCaptacion"></mat-datepicker-toggle>
+              <mat-datepicker #fechaCaptacion></mat-datepicker>
+            </div>
+        </div>
+    </div>
+</form>

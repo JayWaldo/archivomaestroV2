@@ -1,0 +1,16 @@
+<div class="titleWrapper" @fadeInOut>
+    <h1 class="title">Bienvenido {{currentUser?.nombre}}</h1>
+    <p>Rol: <b>{{rol?.toString()}}</b></p>
+</div>
+<div class="cardsContainer" @fadeInOut>
+    <div class="candidatos" (click)="goToSection(1)">
+        <h3 class="titleCard">Candidatos</h3>
+        <p>Completados: {{candidatos.length}}</p>
+        <p>En progreso: {{candidatosInfo.porTerminar}}</p>
+        <p>Total: {{candidatos.length}}</p>
+    </div>
+    <div class="Registro" (click)="goToSection(0)">
+        <h3 class="titleCard">Registro</h3>
+        <p>Ingresar nuevo registro <i class="fas fa-user-plus"></i></p>
+    </div>
+</div>
