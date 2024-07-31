@@ -34,13 +34,13 @@ export class EvaluacionesComponent implements OnInit {
     'NO TIENE EQUIPO COMPATIBLE CON APK']
   };
   @Input() data: IEvaluaciones = {
-    ValidacionSindicato: '',
-    EstatusGeneralpsicometria: '',
-    ReferenciasLaborales: '',
-    ExamenManejo: '',
-    EstatusGeneralDocumentos: '',
-    EstatusGeneral: '',
-    Fechaingreso: ''
+    validacionSindicato: '',
+    estatusGeneralPsicometria: '',
+    referenciasLaborales: '',
+    examenManejo: '',
+    estatusGeneralDocumentos: '',
+    estatusGeneral: '',
+    fechaIngreso: ''
   };
   evaluacionForm !: FormGroup;
   isCompleted: boolean = false;
@@ -50,13 +50,13 @@ export class EvaluacionesComponent implements OnInit {
     private formState: FormStateService
   ) { 
     this.evaluacionForm = this.fb.group({
-      ValidacionSindicato: ['', Validators.required],
-      EstatusGeneralpsicometria: ['', Validators.required],
-      ReferenciasLaborales: ['', Validators.required],
-      ExamenManejo: ['', Validators.required],
-      EstatusGeneralDocumentos: ['', Validators.required],
-      EstatusGeneral: ['', Validators.required],
-      Fechaingreso: ['', Validators.required]
+      validacionSindicato: ['', Validators.required],
+      estatusGeneralPsicometria: ['', Validators.required],
+      referenciasLaborales: ['', Validators.required],
+      examenManejo: ['', Validators.required],
+      estatusGeneralDocumentos: ['', Validators.required],
+      estatusGeneral: ['', Validators.required],
+      fechaIngreso: ['', Validators.required]
     })
   }
 
@@ -81,6 +81,7 @@ export class EvaluacionesComponent implements OnInit {
 
   saveData(){
     this.data = this.evaluacionForm.value
+    this.data.fechaIngreso = this.formatDateToYYYYMMDD(this.data.fechaIngreso);
     console.log(this.data);
     this.saveFormState();
   }
@@ -91,5 +92,12 @@ export class EvaluacionesComponent implements OnInit {
   private checkAllFieldsFilled()
   {
     this.isCompleted = Object.values(this.evaluacionForm.value).every(field => field !== '' || field !== null);
+  }
+  private formatDateToYYYYMMDD(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 }

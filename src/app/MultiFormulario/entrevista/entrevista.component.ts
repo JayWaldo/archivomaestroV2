@@ -19,9 +19,9 @@ export class EntrevistaComponent implements OnInit {
   };
   
   @Input() data: IEntrevista = {
-    FechaSegundaEntrevista:'',
-    EstatusSegundaEntrevista:'',
-    TipoSegundaEntrevista: ''
+    fechaSegundaEntrevista:'',
+    estatusSegundaEntrevista:'',
+    tipoSegundaEntrevista: ''
   };
 
   entrevistaForm!: FormGroup;
@@ -33,9 +33,9 @@ export class EntrevistaComponent implements OnInit {
     private formState: FormStateService
   ){
     this.entrevistaForm = this.fb.group({
-        FechaSegundaEntrevista: ['', Validators.required],
-        EstatusSegundaEntrevista: ['', Validators.required],
-        TipoSegundaEntrevista: ['', Validators.required]
+        fechaSegundaEntrevista: ['', Validators.required],
+        estatusSegundaEntrevista: ['', Validators.required],
+        tipoSegundaEntrevista: ['', Validators.required]
     });
   }
 
@@ -59,27 +59,24 @@ export class EntrevistaComponent implements OnInit {
   }
 
   saveData() {
-    const formValue = this.entrevistaForm.value;
-    // const fechaEntrevista = this.formatDate(formValue.fechaPrimerEntrevista);
-    // formValue.fechaPrimerEntrevista = fechaEntrevista;
     this.data = this.entrevistaForm.value;
-    console.log(formValue);
+    this.data.fechaSegundaEntrevista = this.formatDateToYYYYMMDD(this.data.fechaSegundaEntrevista)
+    console.log(this.data);
 
     this.saveFormState();
   }
 
-  formatDate(date: any): string {
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime())) return '';
-    const day = parsedDate.getDate().toString().padStart(2, '0');
-    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
-    const year = parsedDate.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
   private saveFormState(){
     this.formState.saveFormState(this.formKey ,this.entrevistaForm.value);
   }
   private checkAllFieldsFilled() {
     this.isCompleted = Object.values(this.entrevistaForm.controls).every(control => control.value !== null && control.value !== '');
+  }
+  private formatDateToYYYYMMDD(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 }

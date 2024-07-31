@@ -52,14 +52,14 @@ export class CaptacionComponent implements OnInit {
 
   @Input() data: ICaptacion = {
     region: '',
-    Sistema: '',
-    FuenteCaptacion: '',
-    Responsable: '',
-    NombreCandidato: '',
-    Genero: '',
-    Telefono: '',
-    PuestoSolicitado: '',
-    FechaCaptacion: ''
+    sistema: '',
+    fuenteCaptacion: '',
+    responsable: '',
+    nombreCandidato: '',
+    genero: '',
+    telefono: '',
+    puestoSolicitado: '',
+    fechaCaptacion: ''
   }
 
   constructor(
@@ -142,6 +142,7 @@ export class CaptacionComponent implements OnInit {
 
   saveData(): void {
     this.data = this.captacionForm.value;
+    this.data.fechaCaptacion = this.formatDateToYYYYMMDD(this.data.fechaCaptacion);
     console.log(this.data);
     this.saveFormState();
   }
@@ -152,5 +153,12 @@ export class CaptacionComponent implements OnInit {
 
   private checkAllFieldsFilled(): void {
     this.isCompleted = Object.values(this.captacionForm.value).every(field => field !== '');
+  }
+  private formatDateToYYYYMMDD(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 }

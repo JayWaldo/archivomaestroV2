@@ -4,7 +4,7 @@
     <div class="input-container">
         
         <div class="select-container">Validacion del Sindicato
-            <select id="sindicato" formControlName="ValidacionSindicato">
+            <select id="sindicato" formControlName="validacionSindicato">
             <option value="" disabled [selected]="true">Seleccione una opción</option>
             <option *ngFor="let item of getOpciones('validacionSindicato')" [value]="item">{{item}}</option>
             </select>
@@ -14,7 +14,7 @@
         </div>
 
         <div class="select-container">Estatus General Psicometria
-            <select name="dropPsico" id="estatus" formControlName="EstatusGeneralpsicometria">
+            <select name="dropPsico" id="estatus" formControlName="estatusGeneralPsicometria">
                 <option value="" disabled [selected]="true">Seleccione una opción</option>
                 <option *ngFor="let item of getOpciones('estatus'); let i = index" value={{item.indexOf(item)}} [value]="item">{{item}}</option>
             </select>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="select-container">Referencias Laborales
-            <select name="dropReferencias" id="referencias" formControlName="ReferenciasLaborales">
+            <select name="dropReferencias" id="referencias" formControlName="referenciasLaborales">
                 <option value="" disabled [selected]="true">Seleccione una opción</option>
                 <option *ngFor="let item of getOpciones('referenciasLaborales'); let i = index" value={{item.indexOf(item)}} [value]="item">{{item}}</option>
             </select>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="select-container">Examen de Manejo
-            <select name="dropManejo" id="examManejo" formControlName="ExamenManejo">
+            <select name="dropManejo" id="examManejo" formControlName="examenManejo">
                 <option value="" disabled [selected]="true">Seleccione una opción</option>
                 <option *ngFor="let item of getOpciones('examManejo'); let i = index" value={{item.indexOf(item)}} [value]="item">{{item}}</option>
             </select>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="select-container">Estatus General Documentos
-            <select name="dropDocs" id="dropDocs" formControlName="EstatusGeneralDocumentos">
+            <select name="dropDocs" id="dropDocs" formControlName="estatusGeneralDocumentos">
                 <option value="" disabled [selected]="true">Seleccione una opción</option>
                 <option *ngFor="let item of getOpciones('documentos'); let i = index" value={{item.indexOf(item)}} [value]="item">{{item}}</option>
             </select>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="select-container">Estatus General
-            <select name="dropSindicato" id="sindicato" formControlName="EstatusGeneral">
+            <select name="dropSindicato" id="sindicato" formControlName="estatusGeneral">
                 <option value="" disabled [selected]="true">Seleccione una opción</option>
                 <option *ngFor="let item of getOpciones('estatusGral'); let i = index" value={{item.indexOf(item)}} [value]="item">{{item}}</option>
             </select>
@@ -64,9 +64,9 @@
         </div>
 
         <div class="select-container">
-            <label for="Fechaingreso" class="labelPicker">Fecha de Ingreso</label>
+            <label for="fechaIngreso" class="labelPicker">Fecha de Ingreso</label>
             <div class="datePickerContainer">
-              <input id="Fechaingreso" type="text" matInput [matDatepicker]="fechaIngreso" formControlName="Fechaingreso">
+              <input id="fechaIngreso" type="text" matInput [matDatepicker]="fechaIngreso" formControlName="fechaIngreso">
               <mat-datepicker-toggle matSuffix [for]="fechaIngreso"></mat-datepicker-toggle>
               <mat-datepicker #fechaIngreso></mat-datepicker>
             </div>

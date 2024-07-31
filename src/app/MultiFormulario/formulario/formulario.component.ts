@@ -11,6 +11,7 @@ import { FiltroComponent } from '../filtro/filtro.component';
 import { EntrevistaComponent } from '../entrevista/entrevista.component';
 import { EvaluacionesComponent } from '../evaluaciones/evaluaciones.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { FormStateService } from 'src/app/services/FormState.service';
 
 @Component({
   selector: 'app-formulario',
@@ -56,16 +57,17 @@ export class FormularioComponent implements OnInit, AfterViewInit {
   showPopUp = false;
   
   sectionsForm = [
-    {title: 'Captacion', checked: false, component: {} as CaptacionComponent, dataComp: {} as any},
-    {title: 'Filtro', checked: false, component: {} as FiltroComponent, dataComp: {} as any},
-    {title: 'Entrevista', checked: false, component: {} as EntrevistaComponent, dataComp: {} as any},
-    {title: 'Evaluaciones, Documentos', checked: false, component: {} as EvaluacionesComponent, dataComp: {} as any},
+    {title: 'Captacion', checked: false, component: this.captacionComp, dataComp: {} as any},
+    {title: 'Filtro', checked: false, component: this.filtroComp, dataComp: {} as any},
+    {title: 'Entrevista', checked: false, component: this.entrevistaComp, dataComp: {} as any},
+    {title: 'Evaluaciones, Documentos', checked: false, component: this.evaluacionComp, dataComp: {} as any},
   ];
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private servicioCompartido : SharedService,
+    private formState : FormStateService,
     private rhService: RHService,
     private regionService: RegionService,
     private candidatoService: CandidatoService
@@ -73,14 +75,10 @@ export class FormularioComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     this.fetchRHInfo();
+    this.currentSection();
   }
   
   ngAfterViewInit() {
-    this.sectionsForm[0].component = this.captacionComp;
-    this.sectionsForm[1].component = this.filtroComp;
-    this.sectionsForm[2].component = this.entrevistaComp;
-    this.sectionsForm[3].component = this.evaluacionComp;
-    this.currentSection();
   }
 
   currentPart: number = 1;
@@ -140,6 +138,7 @@ export class FormularioComponent implements OnInit, AfterViewInit {
 
   async sendData() {
     try {
+      this.saveCurrentSectionData();
       this.candidatoData = this.getFormDataAll();
       console.log(this.candidatoData);
       this.servicioCompartido.enviarDatos(this.candidatoData);
@@ -170,65 +169,78 @@ export class FormularioComponent implements OnInit, AfterViewInit {
     dataForm.promedioDiasCobertura = 0;
     dataForm.rhId = this.currentRh.usuarioID;
     dataForm.progreso = 0;
+    console.log('Datos del formulario completo');
+    console.log(dataForm);
     return dataForm;
   }
 
-  sendCandidato(): Promise<ICandidato>{
-    return new Promise(
-        (resolve, reject) => {
-          if (this.currentRh && 
-            this.candidatoData.captacion && 
-            this.candidatoData.evaluaciones && 
-            this.candidatoData.filtro && 
-            this.candidatoData.segundaEntrevista) {
-            let dataForm: ICandidato = {
-              id: 0,
-              region: this.candidatoData.captacion.region,
-              sistema: this.candidatoData.captacion.Sistema,
-              FuenteCaptacion: this.candidatoData.captacion.FuenteCaptacion,
-              Responsable: this.candidatoData.captacion.Responsable,
-              NombreCandidato: this.candidatoData.captacion.NombreCandidato,
-              Genero: this.candidatoData.captacion.Genero,
-              Telefono: this.candidatoData.captacion.Telefono,
-              PuestoSolicitado: this.candidatoData.captacion.PuestoSolicitado,
-              fechaCaptacion: this.candidatoData.captacion.FechaCaptacion,
-              edad: this.candidatoData.filtro.Edad,
-              Escolaridad: this.candidatoData.filtro.Escolaridad,
-              fechaPrimerContacto: this.candidatoData.filtro.FechaContacto,
-              TipoCandidato: this.candidatoData.filtro.TipoCandidato,
-              TipoEntrevista: this.candidatoData.filtro.TipoEntrevista,
-              EstatusPrimerEntrevista: this.candidatoData.filtro.EstatusPrimeraEntrevista,
-              fechaEntrevista: this.candidatoData.segundaEntrevista.FechaSegundaEntrevista,
-              estatusSegundaEntrevista: this.candidatoData.segundaEntrevista.EstatusSegundaEntrevista,
-              TipoEntrevistaSegunda: this.candidatoData.segundaEntrevista.TipoSegundaEntrevista,
-              ValidacionSindicato: this.candidatoData.evaluaciones.ValidacionSindicato,
-              EstatusGeneralPsicometria: this.candidatoData.evaluaciones.EstatusGeneralpsicometria,
-              ReferenciasLaborales: this.candidatoData.evaluaciones.ReferenciasLaborales,
-              ExamenManejo: this.candidatoData.evaluaciones.ExamenManejo,
-              EstatusGeneralDocumentos: this.candidatoData.evaluaciones.EstatusGeneralDocumentos,
-              EstatusGeneral: this.candidatoData.evaluaciones.EstatusGeneral,
-              fechaIngreso: this.candidatoData.evaluaciones.Fechaingreso,
-              promedioDiasCobertura: this.getPromDiasCobertura(this.candidatoData.filtro.FechaContacto, this.candidatoData.evaluaciones.Fechaingreso),
-              rhId: this.currentRh.usuarioID,
-              progreso:0
-            };
-            this.candidatoService.addCandidato(dataForm).subscribe(
-              (res)=>{
-                console.log('Candidato enviado exitosamente' + res);
-                resolve(res);
-              }, (error) =>{
-                console.log(dataForm);
-                console.error('Error al enviar candidato ' + error);
-                reject(error);
-              }
-            )
-          } else {
-            console.log('Faltaron datos o algo salio mal');
-            reject('Algo salio mal')
-          }
-        }
-      )
+  mapCandidatoDataToICandidato(data: CandidatoData): ICandidato {
+    return {
+      id: data.id,
+      region: data.captacion?.region ?? '',
+      sistema: data.captacion?.sistema ?? '',
+      fuenteCaptacion: data.captacion?.fuenteCaptacion ?? '',
+      responsable: data.captacion?.responsable ?? '',
+      nombreCandidato: data.captacion?.nombreCandidato ?? '',
+      genero: data.captacion?.genero ?? '',
+      telefono: data.captacion?.telefono ?? '',
+      puestoSolicitado: data.captacion?.puestoSolicitado ?? '',
+      fechaCaptacion: data.captacion?.fechaCaptacion ?? '',
+      edad: data.filtro?.edad ?? 0,
+      escolaridad: data.filtro?.escolaridad ?? '',
+      fechaPrimerContacto: data.filtro?.fechaPrimerContacto ?? '',
+      tipoCandidato: data.filtro?.tipoCandidato ?? '',
+      tipoEntrevista: data.filtro?.tipoEntrevista ?? '',
+      estatusPrimerEntrevista: data.filtro?.estatusPrimerEntrevista ?? '',
+      fechaEntrevista: data.segundaEntrevista?.fechaSegundaEntrevista ?? '',
+      estatusSegundaEntrevista: data.segundaEntrevista?.estatusSegundaEntrevista ?? '',
+      tipoEntrevistaSegunda: data.segundaEntrevista?.tipoSegundaEntrevista ?? '',
+      validacionSindicato: data.evaluaciones?.validacionSindicato ?? '',
+      estatusGeneralPsicometria: data.evaluaciones?.estatusGeneralPsicometria ?? '',
+      referenciasLaborales: data.evaluaciones?.referenciasLaborales ?? '',
+      examenManejo: data.evaluaciones?.examenManejo ?? '',
+      estatusGeneralDocumentos: data.evaluaciones?.estatusGeneralDocumentos ?? '',
+      estatusGeneral: data.evaluaciones?.estatusGeneral ?? '',
+      fechaIngreso: data.evaluaciones?.fechaIngreso ?? '',
+      promedioDiasCobertura: this.getPromDiasCobertura(
+        data.filtro?.fechaPrimerContacto ?? '',
+        data.evaluaciones?.fechaIngreso ?? ''
+      ),
+      rhId: data.rhId ?? 0,
+      progreso: data.progreso ?? 0
+    };
   }
+  
+  
+
+  sendCandidato(): Promise<ICandidato> {
+    return new Promise((resolve, reject) => {
+      if (this.currentRh && this.candidatoData) {
+        let dataForm = this.mapCandidatoDataToICandidato(this.candidatoData);
+        dataForm.rhId = this.currentRh.usuarioID;
+        dataForm.promedioDiasCobertura = this.getPromDiasCobertura(
+          this.candidatoData.filtro?.fechaPrimerContacto ?? '',
+          this.candidatoData.evaluaciones?.fechaIngreso ?? ''
+        );
+  
+        this.candidatoService.addCandidato(dataForm).subscribe(
+          (res) => {
+            console.log('Candidato enviado exitosamente', res);
+            resolve(res);
+          },
+          (error) => {
+            console.error('Error al enviar candidato', error);
+            reject(error);
+          }
+        );
+      } else {
+        console.log('Faltaron datos o algo salió mal');
+        reject('Algo salió mal');
+      }
+    });
+  }
+  
+  
 
   fetchRHInfo(){
     const email = this.authService.getEmail()

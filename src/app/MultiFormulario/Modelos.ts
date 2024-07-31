@@ -14,38 +14,38 @@ export interface IAlta{
 
 export interface ICaptacion{
     region: string;
-    Sistema: string;
-    FuenteCaptacion: string;
-    Responsable: string;
-    NombreCandidato: string;
-    Genero: string;
-    Telefono: string;
-    PuestoSolicitado: string;
-    FechaCaptacion: string;
+    sistema: string;
+    fuenteCaptacion: string;
+    responsable: string;
+    nombreCandidato: string;
+    genero: string;
+    telefono: string;
+    puestoSolicitado: string;
+    fechaCaptacion: string;
 }
 export interface IFiltro{
-    Edad: number;
-    Escolaridad:string;
-    FechaContacto:string;
-    TipoCandidato:string;
-    TipoEntrevista:string;
-    EstatusPrimeraEntrevista:string;
+    edad: number;
+    escolaridad:string;
+    fechaPrimerContacto:string;
+    tipoCandidato:string;
+    tipoEntrevista:string;
+    estatusPrimerEntrevista:string;
 }
 
 export interface IEntrevista{
-    FechaSegundaEntrevista:string;
-    EstatusSegundaEntrevista:string;
-    TipoSegundaEntrevista: string;
+    fechaSegundaEntrevista:string;
+    estatusSegundaEntrevista:string;
+    tipoSegundaEntrevista: string;
 }
 
 export interface IEvaluaciones {
-    ValidacionSindicato: string;
-    EstatusGeneralpsicometria: string;
-    ReferenciasLaborales: string;
-    ExamenManejo: string;
-    EstatusGeneralDocumentos: string;
-    EstatusGeneral: string;
-    Fechaingreso: string;
+    validacionSindicato: string;
+    estatusGeneralPsicometria: string;
+    referenciasLaborales: string;
+    examenManejo: string;
+    estatusGeneralDocumentos: string;
+    estatusGeneral: string;
+    fechaIngreso: string;
 }
 
 export interface User {
@@ -79,28 +79,28 @@ export interface ICandidato{
     id: number;
     region: string;
     sistema: string;
-    FuenteCaptacion: string;
-    Responsable: string;
-    NombreCandidato: string;
-    Genero: string;
-    Telefono: string;
-    PuestoSolicitado: string;
+    fuenteCaptacion: string;
+    responsable: string;
+    nombreCandidato: string;
+    genero: string;
+    telefono: string;
+    puestoSolicitado: string;
     fechaCaptacion: string;
     edad: number;
-    Escolaridad: string;
+    escolaridad: string;
     fechaPrimerContacto: string;
-    TipoCandidato: string;
-    TipoEntrevista: string;
-    EstatusPrimerEntrevista: string;
+    tipoCandidato: string;
+    tipoEntrevista: string;
+    estatusPrimerEntrevista: string;
     fechaEntrevista: string;
     estatusSegundaEntrevista: string;
-    TipoEntrevistaSegunda: string;
-    ValidacionSindicato: string;
-    EstatusGeneralPsicometria: string;
-    ReferenciasLaborales: string;
-    ExamenManejo: string;
-    EstatusGeneralDocumentos: string;
-    EstatusGeneral: string;
+    tipoEntrevistaSegunda: string;
+    validacionSindicato: string;
+    estatusGeneralPsicometria: string;
+    referenciasLaborales: string;
+    examenManejo: string;
+    estatusGeneralDocumentos: string;
+    estatusGeneral: string;
     fechaIngreso: string;
     promedioDiasCobertura: number;
     rhId: number;

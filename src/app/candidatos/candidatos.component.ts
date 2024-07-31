@@ -167,12 +167,12 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
         let candidato : ICandidatoTabla = {
           No: 0,
           Id: candi.id,
-          Nombre: candi.NombreCandidato,
+          Nombre: candi.nombreCandidato,
           Region: candi.region,
           Sistema: candi.sistema,
           Reclutador: reclutador,
           Progreso: this.calcularProgreso(candi),
-          Estatus: candi.EstatusGeneral
+          Estatus: candi.estatusGeneral
         }
         this.tableData.push(candidato);
         this.tableData[this.tableData.indexOf(candidato)].No = this.tableData.indexOf(candidato) + 1;

@@ -29,12 +29,12 @@ export class FiltroComponent implements OnInit {
     'estatusEntrevista': ['Aceptado', 'Rechazado', 'No se presento']
     };
   @Input() data : IFiltro = {
-    Edad: 0,
-    Escolaridad:'',
-    FechaContacto:'',
-    TipoCandidato:'',
-    TipoEntrevista:'',
-    EstatusPrimeraEntrevista:''
+    edad: 0,
+    escolaridad:'',
+    fechaPrimerContacto:'',
+    tipoCandidato:'',
+    tipoEntrevista:'',
+    estatusPrimerEntrevista:''
   }
 
   constructor(
@@ -44,7 +44,7 @@ export class FiltroComponent implements OnInit {
     this.filtroForm = this.fb.group({
       edad: ['', Validators.required],
       escolaridad: ['', Validators.required],
-      fechaContacto: ['', Validators.required],
+      fechaPrimerContacto: ['', Validators.required],
       tipoCandidato: ['', Validators.required],
       tipoEntrevista: ['', Validators.required],
       estatusPrimerEntrevista: ['', Validators.required]
@@ -69,6 +69,7 @@ export class FiltroComponent implements OnInit {
 
   saveData(){
     this.data = this.filtroForm.value
+    this.data.fechaPrimerContacto = this.formatDateToYYYYMMDD(this.data.fechaPrimerContacto);
     console.log(this.data);
     this.saveFormState();
   }
@@ -83,5 +84,12 @@ export class FiltroComponent implements OnInit {
   private checkAllFieldsFilled()
   {
     this.isCompleted = Object.values(this.filtroForm.value).every(field => field !== '' || field !== null);
+  }
+  private formatDateToYYYYMMDD(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 }

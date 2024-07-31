@@ -4,16 +4,16 @@
   <div class="input-container">
 
     <div class="select-container">
-      <label for="FechaSegundaEntrevista" class="labelPicker">Fecha Segunda Entrevista</label>
+      <label for="fechaSegundaEntrevista" class="labelPicker">Fecha Segunda Entrevista</label>
       <div class="datePickerContainer">
-        <input id="FechaSegundaEntrevista" type="text" matInput [matDatepicker]="pickerdaEntrevista" formControlName="FechaSegundaEntrevista">
+        <input id="fechaSegundaEntrevista" type="text" matInput [matDatepicker]="pickerdaEntrevista" formControlName="fechaSegundaEntrevista">
         <mat-datepicker-toggle matSuffix [for]="pickerdaEntrevista"></mat-datepicker-toggle>
         <mat-datepicker #pickerdaEntrevista></mat-datepicker>
       </div>
     </div>
 
     <div class="select-container">Estatus Segunda Entrevista
-      <select id="segundaEntrevista" formControlName="EstatusSegundaEntrevista">
+      <select id="segundaEntrevista" formControlName="estatusSegundaEntrevista">
         <option value="" disabled [selected]="true">Seleccione una opción</option>
         <option *ngFor="let item of getOpciones('estatusEntrevista')" [value]="item">{{item}}</option>
       </select>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="select-container">Tipo de Entrevista
-      <select id="TipoSegundaEntrevista" formControlName="TipoSegundaEntrevista">
+      <select id="TipoSegundaEntrevista" formControlName="tipoSegundaEntrevista">
         <option value="" disabled [selected]="true">Seleccione una opción</option>
         <option *ngFor="let item of getOpciones('tipoEntrevista')" [value]="item">{{item}}</option>
       </select>
