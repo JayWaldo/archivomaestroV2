@@ -22,6 +22,7 @@ export interface ICaptacion{
     telefono: string;
     puestoSolicitado: string;
     fechaCaptacion: string;
+    progreso: number;
 }
 export interface IFiltro{
     edad: number;
@@ -30,12 +31,14 @@ export interface IFiltro{
     tipoCandidato:string;
     tipoEntrevista:string;
     estatusPrimerEntrevista:string;
+    progreso: number;
 }
 
 export interface IEntrevista{
     fechaSegundaEntrevista:string;
     estatusSegundaEntrevista:string;
     tipoSegundaEntrevista: string;
+    progreso: number;
 }
 
 export interface IEvaluaciones {
@@ -46,6 +49,7 @@ export interface IEvaluaciones {
     estatusGeneralDocumentos: string;
     estatusGeneral: string;
     fechaIngreso: string;
+    progreso: number;
 }
 
 export interface User {

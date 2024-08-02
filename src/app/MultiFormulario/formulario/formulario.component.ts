@@ -53,7 +53,7 @@ export class FormularioComponent implements OnInit, AfterViewInit {
 
   currentRh!: IRH;
   candidatoData = new CandidatoData();
-
+  progresoGral = 0;
   showPopUp = false;
   
   sectionsForm = [
@@ -126,14 +126,15 @@ export class FormularioComponent implements OnInit, AfterViewInit {
     const currentComponent = this.getCurrentComponent();
     if(currentComponent){
       currentComponent.saveData();
+      this.sectionsForm[this.currentPart - 1].component = currentComponent;
       this.sectionsForm[this.currentPart - 1].dataComp = currentComponent.data;
       console.log('Entro a la validacion para guardar datos');
       console.log(currentComponent.data);
     }
-    console.log('Estado de los componentes hijos en el padre:')
-    for(let hijo of this.sectionsForm){
-      console.log(hijo.dataComp)
-    }
+    // console.log('Estado de los componentes hijos en el padre:')
+    // for(let hijo of this.sectionsForm){
+    //   console.log(hijo.dataComp)
+    // }
   }
 
   async sendData() {
@@ -207,7 +208,7 @@ export class FormularioComponent implements OnInit, AfterViewInit {
         data.evaluaciones?.fechaIngreso ?? ''
       ),
       rhId: data.rhId ?? 0,
-      progreso: data.progreso ?? 0
+      progreso: this.setProgresoGral() ?? 0
     };
   }
   
@@ -239,8 +240,23 @@ export class FormularioComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  updateProgreso(progreso : number, index : number){
+    console.log('Progreso recibido: ' + progreso)
+    this.sectionsForm[index].dataComp.progreso = progreso;
+    console.log(this.sectionsForm[index])
+    this.setProgresoGral();
+  }
   
-  
+  setProgresoGral(){
+    let progreso = 0
+    for(let comp of this.sectionsForm){
+      progreso += comp.dataComp.progreso;
+      //console.log(comp.dataComp)
+    }
+    this.candidatoData.progreso = progreso;
+    return progreso;
+  }
 
   fetchRHInfo(){
     const email = this.authService.getEmail()

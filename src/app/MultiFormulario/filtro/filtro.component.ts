@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormStateService } from 'src/app/services/FormState.service';
 import { IFiltro } from '../Modelos';
@@ -12,6 +12,8 @@ export class FiltroComponent implements OnInit {
   title = 'Filtro';
   filtroForm !: FormGroup;
   isCompleted: boolean = false;
+  progreso = 0;
+  @Output() progresoChange = new EventEmitter<number>()
   private formKey = 'datosFiltro';
   escolaridadList = [
     'Primaria Terminada',
@@ -34,7 +36,8 @@ export class FiltroComponent implements OnInit {
     fechaPrimerContacto:'',
     tipoCandidato:'',
     tipoEntrevista:'',
-    estatusPrimerEntrevista:''
+    estatusPrimerEntrevista:'',
+    progreso: 0
   }
 
   constructor(
@@ -69,9 +72,11 @@ export class FiltroComponent implements OnInit {
 
   saveData(){
     this.data = this.filtroForm.value
+    this.data.progreso = this.progreso;
     this.data.fechaPrimerContacto = this.formatDateToYYYYMMDD(this.data.fechaPrimerContacto);
     console.log(this.data);
     this.saveFormState();
+    this.progresoChange.emit(this.data.progreso);
   }
 
   getOpciones(grupo: string) {
@@ -84,6 +89,10 @@ export class FiltroComponent implements OnInit {
   private checkAllFieldsFilled()
   {
     this.isCompleted = Object.values(this.filtroForm.value).every(field => field !== '' || field !== null);
+    if(this.isCompleted){
+      this.progreso = 25;
+      this.progresoChange.emit(this.data.progreso);
+    }
   }
   private formatDateToYYYYMMDD(dateString: string): string {
     const date = new Date(dateString);

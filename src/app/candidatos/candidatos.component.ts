@@ -136,30 +136,6 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
     })
   }
 
-  calcularProgreso(candidato: ICandidato): number{
-    let progreso = 0;
-
-    switch(candidato.progreso){
-      case 1:
-        progreso =25;
-        break;
-      case 2:
-        progreso =50;
-        break;
-      case 3:
-        progreso =75;
-        break;
-      case 4:
-        progreso =100;
-        break;
-      default:
-        progreso = 0;
-        break;
-    }
-
-    return progreso
-  }
-
   async cargarDatosEnArray(){
     try{
       for(let candi of this.candidatosList){
@@ -171,7 +147,7 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
           Region: candi.region,
           Sistema: candi.sistema,
           Reclutador: reclutador,
-          Progreso: this.calcularProgreso(candi),
+          Progreso: candi.progreso,
           Estatus: candi.estatusGeneral
         }
         this.tableData.push(candidato);

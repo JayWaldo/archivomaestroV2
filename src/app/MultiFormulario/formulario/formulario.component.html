@@ -9,19 +9,19 @@
     <i class="fas fa-check"></i>
 </div>
 <div *ngIf="currentPart === 1" class="container" @fadeInOut>
-    <app-captacion [data]="sectionsForm[0].dataComp"></app-captacion>
+    <app-captacion [data]="sectionsForm[0].dataComp" (progresoChange)="updateProgreso($event, 0)"></app-captacion>
 </div>
 
  <div *ngIf="currentPart === 2" class="container" @fadeInOut>
-    <app-filtro [data]="sectionsForm[1].dataComp"></app-filtro>
+    <app-filtro [data]="sectionsForm[1].dataComp" (progresoChange)="updateProgreso($event, 1)"></app-filtro>
 </div>
 
 <div *ngIf="currentPart === 3" class="container" @fadeInOut>
-    <app-entrevista [data]="sectionsForm[2].dataComp"></app-entrevista>
+    <app-entrevista [data]="sectionsForm[2].dataComp" (progresoChange)="updateProgreso($event, 2)"></app-entrevista>
 </div>
 
 <div *ngIf="currentPart === 4" class="container" @fadeInOut>
-    <app-evaluaciones [data]="sectionsForm[3].dataComp"></app-evaluaciones>
+    <app-evaluaciones [data]="sectionsForm[3].dataComp" (progresoChange)="updateProgreso($event, 3)"></app-evaluaciones>
 </div>
 
 <div class="buttons-container">

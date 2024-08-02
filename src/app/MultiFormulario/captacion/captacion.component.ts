@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { RegionService } from 'src/app/services/region.service';
@@ -16,6 +16,8 @@ export class CaptacionComponent implements OnInit {
   filteredSystems: string[] = [];
   captacionForm: FormGroup;
   isCompleted: boolean = false;
+  progreso = 0;
+  @Output() progresoChange = new EventEmitter<number>();
   private formKey = 'captacionForm';
   fuentesCaptacion = [
     'AGENCIAS LOCALES',
@@ -59,7 +61,8 @@ export class CaptacionComponent implements OnInit {
     genero: '',
     telefono: '',
     puestoSolicitado: '',
-    fechaCaptacion: ''
+    fechaCaptacion: '',
+    progreso: 0
   }
 
   constructor(
@@ -142,9 +145,11 @@ export class CaptacionComponent implements OnInit {
 
   saveData(): void {
     this.data = this.captacionForm.value;
+    this.data.progreso = this.progreso
     this.data.fechaCaptacion = this.formatDateToYYYYMMDD(this.data.fechaCaptacion);
     console.log(this.data);
     this.saveFormState();
+    this.progresoChange.emit(this.data.progreso);
   }
 
   private saveFormState(): void {
@@ -153,6 +158,10 @@ export class CaptacionComponent implements OnInit {
 
   private checkAllFieldsFilled(): void {
     this.isCompleted = Object.values(this.captacionForm.value).every(field => field !== '');
+    if(this.isCompleted){
+      this.progreso = 25;
+      this.progresoChange.emit(this.data.progreso);
+    }
   }
   private formatDateToYYYYMMDD(dateString: string): string {
     const date = new Date(dateString);

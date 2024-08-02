@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IEntrevista } from '../Modelos';
 import { FormStateService } from 'src/app/services/FormState.service';
@@ -11,6 +11,8 @@ import { FormStateService } from 'src/app/services/FormState.service';
 export class EntrevistaComponent implements OnInit {
 
   title = 'Entrevista';
+  progreso = 0;
+  @Output() progresoChange = new EventEmitter<number>();
   dropOpciones: { [key: string]: string[] } = {
     'tipoCandidato': ['Nuevo', 'Reingreso', 'Independiente'],
     'tipoEntrevista': ['Presencial', 'Virtual', 'Telefonica'],
@@ -21,7 +23,8 @@ export class EntrevistaComponent implements OnInit {
   @Input() data: IEntrevista = {
     fechaSegundaEntrevista:'',
     estatusSegundaEntrevista:'',
-    tipoSegundaEntrevista: ''
+    tipoSegundaEntrevista: '',
+    progreso: 0
   };
 
   entrevistaForm!: FormGroup;
@@ -60,10 +63,11 @@ export class EntrevistaComponent implements OnInit {
 
   saveData() {
     this.data = this.entrevistaForm.value;
+    this.data.progreso = this.progreso;
     this.data.fechaSegundaEntrevista = this.formatDateToYYYYMMDD(this.data.fechaSegundaEntrevista)
     console.log(this.data);
-
     this.saveFormState();
+    this.progresoChange.emit(this.data.progreso)
   }
 
   private saveFormState(){
@@ -71,6 +75,10 @@ export class EntrevistaComponent implements OnInit {
   }
   private checkAllFieldsFilled() {
     this.isCompleted = Object.values(this.entrevistaForm.controls).every(control => control.value !== null && control.value !== '');
+    if(this.isCompleted){
+      this.progreso = 25;
+      this.progresoChange.emit(this.data.progreso);
+    }
   }
   private formatDateToYYYYMMDD(dateString: string): string {
     const date = new Date(dateString);

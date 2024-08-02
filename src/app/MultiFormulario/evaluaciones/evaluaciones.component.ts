@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormStateService } from 'src/app/services/FormState.service';
 import { IEvaluaciones } from '../Modelos';
@@ -40,10 +40,13 @@ export class EvaluacionesComponent implements OnInit {
     examenManejo: '',
     estatusGeneralDocumentos: '',
     estatusGeneral: '',
-    fechaIngreso: ''
+    fechaIngreso: '',
+    progreso: 0
   };
   evaluacionForm !: FormGroup;
   isCompleted: boolean = false;
+  progreso = 0;
+  @Output() progresoChange = new EventEmitter<number>();
   private formKey = 'evaluaciones';
   constructor(
     private fb: FormBuilder,
@@ -81,9 +84,11 @@ export class EvaluacionesComponent implements OnInit {
 
   saveData(){
     this.data = this.evaluacionForm.value
+    this.data.progreso = this.progreso;
     this.data.fechaIngreso = this.formatDateToYYYYMMDD(this.data.fechaIngreso);
     console.log(this.data);
     this.saveFormState();
+    this.progresoChange.emit(this.data.progreso)
   }
 
   private saveFormState(){
@@ -92,6 +97,10 @@ export class EvaluacionesComponent implements OnInit {
   private checkAllFieldsFilled()
   {
     this.isCompleted = Object.values(this.evaluacionForm.value).every(field => field !== '' || field !== null);
+    if(this.isCompleted){
+      this.progreso = 25;
+      this.progresoChange.emit(this.data.progreso);
+    }
   }
   private formatDateToYYYYMMDD(dateString: string): string {
     const date = new Date(dateString);
