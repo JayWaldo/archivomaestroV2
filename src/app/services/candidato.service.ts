@@ -27,6 +27,16 @@ export class CandidatoService {
     return this.http.get<ICandidato[]>(url);
   }
 
+  getCandidatoById(rhId : number, candidatoId : number) : Observable<ICandidato>{
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    const url = `${this.api}/candidato/${rhId}/${candidatoId}`;
+
+    return this.http.get<ICandidato>(url, { headers });
+  }
+
   getCandidatoByName(rhId: number, name: string): Observable<ICandidato[]>{
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -48,6 +58,17 @@ export class CandidatoService {
 
     const url = `${this.api}/candidato`
     return this.http.post<ICandidato>(url, candidato, { headers })
+  }
+
+  updateCandidato(candidato: ICandidato): Observable<ICandidato>{
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const url = `${this.api}/candidato/${candidato.id}`
+    return this.http.put<ICandidato>(url, candidato, { headers })
   }
 
   deleteCandidato(id: number): Observable<void>{

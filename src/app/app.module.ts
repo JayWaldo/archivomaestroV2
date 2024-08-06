@@ -18,7 +18,6 @@ import { registerLocaleData } from '@angular/common';
 import { SharedService } from './services/shared.service';
 import { CandidatosComponent } from './candidatos/candidatos.component';
 import { AppRoutingModule } from './app-routing.module';
-import { EditarComponent } from './editar/editar.component';
 import { LoginComponent } from './login/login.component';
 import { CaptacionComponent } from './MultiFormulario/captacion/captacion.component';
 import { FiltroComponent } from './MultiFormulario/filtro/filtro.component';
@@ -36,7 +35,6 @@ registerLocaleData(localMx, 'en-GB');
     FormularioComponent,
     InicioComponent,
     CandidatosComponent,
-    EditarComponent,
     LoginComponent,
     CaptacionComponent,
     FiltroComponent,

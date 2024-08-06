@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IEntrevista } from '../Modelos';
+import { IEntrevista, IFiltro } from '../Modelos';
 import { FormStateService } from 'src/app/services/FormState.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class EntrevistaComponent implements OnInit {
   title = 'Entrevista';
   progreso = 0;
   @Output() progresoChange = new EventEmitter<number>();
+  @Output() dataChange = new EventEmitter<IEntrevista>();
   dropOpciones: { [key: string]: string[] } = {
     'tipoCandidato': ['Nuevo', 'Reingreso', 'Independiente'],
     'tipoEntrevista': ['Presencial', 'Virtual', 'Telefonica'],
@@ -42,16 +43,23 @@ export class EntrevistaComponent implements OnInit {
     });
   }
 
+  onFormChange(){
+    this.dataChange.emit(this.data);
+  }
+
   ngOnInit(): void {
-    const savedState = this.formState.getFormState(this.formKey);
-    if(savedState){
-      this.entrevistaForm.patchValue(savedState);
-    }else{
-      this.entrevistaForm.patchValue(this.data);
+    this.loadData(this.data);
+    this.checkAllFieldsFilled();
+  }
+
+  loadData(entrevistaData : IEntrevista){
+    this.data = entrevistaData;
+    if(entrevistaData){
+      this.entrevistaForm.patchValue(entrevistaData);
     }
     this.entrevistaForm.valueChanges.subscribe(
-      ()=> {
-        this.checkAllFieldsFilled();
+      () => {
+        this.saveFormState();
       }
     );
     this.checkAllFieldsFilled();
@@ -65,7 +73,6 @@ export class EntrevistaComponent implements OnInit {
     this.data = this.entrevistaForm.value;
     this.data.progreso = this.progreso;
     this.data.fechaSegundaEntrevista = this.formatDateToYYYYMMDD(this.data.fechaSegundaEntrevista)
-    console.log(this.data);
     this.saveFormState();
     this.progresoChange.emit(this.data.progreso)
   }
@@ -74,7 +81,7 @@ export class EntrevistaComponent implements OnInit {
     this.formState.saveFormState(this.formKey ,this.entrevistaForm.value);
   }
   private checkAllFieldsFilled() {
-    this.isCompleted = Object.values(this.entrevistaForm.controls).every(control => control.value !== null && control.value !== '');
+    this.isCompleted = Object.values(this.entrevistaForm.value).every(field => field !== '' || field !== null);
     if(this.isCompleted){
       this.progreso = 25;
       this.progresoChange.emit(this.data.progreso);

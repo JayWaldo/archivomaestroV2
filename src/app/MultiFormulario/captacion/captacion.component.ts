@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { RegionService } from 'src/app/services/region.service';
@@ -18,6 +18,7 @@ export class CaptacionComponent implements OnInit {
   isCompleted: boolean = false;
   progreso = 0;
   @Output() progresoChange = new EventEmitter<number>();
+  @Output() dataChange = new EventEmitter<ICaptacion>();
   private formKey = 'captacionForm';
   fuentesCaptacion = [
     'AGENCIAS LOCALES',
@@ -46,12 +47,15 @@ export class CaptacionComponent implements OnInit {
     'VOLANTE'
   ]
   vacantes = [
-    'chofer',
-    'vendedor',
+    'Chofer',
+    'Vendedor',
     'Admin Contable',
-    'Desarrollador'
+    'Desarrollador',
+    'Promotor de Cambaceo',
+    'Administrador',
+    'Ingeniero'
   ]
-
+  @Input() editMode: boolean = false;
   @Input() data: ICaptacion = {
     region: '',
     sistema: '',
@@ -91,18 +95,29 @@ export class CaptacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchRegion();
-    const savedState = this.formState.getFormState(this.formKey);
-    if (savedState) {
-      this.captacionForm.patchValue(savedState);
-    } else {
-      this.captacionForm.patchValue(this.data);
-    }
+    this.loadData(this.data);
+  }
 
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.data && !changes.data.firstChange){
+      this.loadData(this.data);
+    }
+  }
+
+  onFormChange(){
+    this.dataChange.emit(this.data)
+  }
+
+  loadData(candidatoData : ICaptacion): void{
+    this.data = candidatoData;
+    if(candidatoData){
+      this.captacionForm.patchValue(candidatoData);
+      this.updateFilteredSystems(candidatoData.region);
+    }
     this.captacionForm.valueChanges.subscribe(() => {
       this.saveFormState();
       this.checkAllFieldsFilled();
     });
-
     this.checkAllFieldsFilled();
   }
 
@@ -110,7 +125,7 @@ export class CaptacionComponent implements OnInit {
     this.regionService.getRegionInfo().subscribe(
       (region: IRegion[]) => {
         this.regionList = region;
-        this.updateFilteredSystems();  // Inicializar los sistemas filtrados
+        this.updateFilteredSystems();
       },
       (error) => {
         console.error('Error al cargar las regiones: ' + error);
@@ -153,7 +168,9 @@ export class CaptacionComponent implements OnInit {
   }
 
   private saveFormState(): void {
-    this.formState.saveFormState(this.formKey, this.captacionForm.value);
+    if(this.editMode || this.isCompleted){
+      this.formState.saveFormState(this.formKey, this.captacionForm.value);
+    }
   }
 
   private checkAllFieldsFilled(): void {

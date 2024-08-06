@@ -111,3 +111,38 @@ button:hover{
 .visible{
     display: flex;
 }
+.hide{
+    display: none;
+}
+.editView div{
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+    gap: 16px;
+}
+.btnPrev{
+    background-color: #003255;
+    transition: .4s;
+}
+.btnNext{
+    background-color: #003255;
+    transition: .4s;
+}
+.btnPrev:hover,
+.btnNext:hover{
+    background-color: #1870af;
+    transition: .4s;
+}
+.cerrar{
+    position: absolute;
+    width: 2.3rem;
+    height: 2.3rem;
+    right: 24px;
+    background: #c92020;
+    color: white;
+    transition: .4s;
+}
+.cerrar:hover{
+    background-color: #e65151;
+    transition: .4s;
+}

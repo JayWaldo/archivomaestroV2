@@ -47,6 +47,7 @@ export class EvaluacionesComponent implements OnInit {
   isCompleted: boolean = false;
   progreso = 0;
   @Output() progresoChange = new EventEmitter<number>();
+  @Output() dataChange = new EventEmitter<IEvaluaciones>();
   private formKey = 'evaluaciones';
   constructor(
     private fb: FormBuilder,
@@ -64,15 +65,22 @@ export class EvaluacionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const savedState = this.formState.getFormState(this.formKey);
-    if(savedState){
-      this.evaluacionForm.patchValue(savedState);
-    }else{
-      this.evaluacionForm.patchValue(this.data);
+    this.loadData(this.data);
+    this.checkAllFieldsFilled();
+  }
+
+  onFormChange(){
+    this.dataChange.emit(this.data);
+  }
+
+  loadData(evaluacionData : IEvaluaciones){
+    this.data = evaluacionData;
+    if(evaluacionData){
+      this.evaluacionForm.patchValue(evaluacionData);
     }
     this.evaluacionForm.valueChanges.subscribe(
-      ()=> {
-        this.checkAllFieldsFilled();
+      () => {
+        this.saveFormState()
       }
     );
     this.checkAllFieldsFilled();
@@ -96,7 +104,7 @@ export class EvaluacionesComponent implements OnInit {
   }
   private checkAllFieldsFilled()
   {
-    this.isCompleted = Object.values(this.evaluacionForm.value).every(field => field !== '' || field !== null);
+    this.isCompleted = Object.values(this.evaluacionForm.value).every(field => field !== '');
     if(this.isCompleted){
       this.progreso = 25;
       this.progresoChange.emit(this.data.progreso);

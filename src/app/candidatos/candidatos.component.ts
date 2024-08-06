@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from '../services/shared.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -6,9 +6,12 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { AuthService } from '../services/auth.service';
 import { RHService } from '../services/rh.service';
 import { CandidatoService } from '../services/candidato.service';
-import { ICandidato, ICandidatoTabla, IRH, RHNivelResponse } from '../MultiFormulario/Modelos';
+import { CandidatoData, ICandidato, ICandidatoTabla, IRH, RHNivelResponse } from '../MultiFormulario/Modelos';
 import { RegionService } from '../services/region.service';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CaptacionComponent } from '../MultiFormulario/captacion/captacion.component';
+import { FiltroComponent } from '../MultiFormulario/filtro/filtro.component';
+import { EntrevistaComponent } from '../MultiFormulario/entrevista/entrevista.component';
+import { EvaluacionesComponent } from '../MultiFormulario/evaluaciones/evaluaciones.component';
 
 @Component({
   selector: 'app-candidatos',
@@ -41,9 +44,16 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
   areUSure = false;
+  editView = false;
+  candidatoToEdit = new CandidatoData();
   candidatoDeleteId : number = 0;
   rol?: string;
+  selectedOption = 1;
   
+  @ViewChild(CaptacionComponent) captacionComp!: CaptacionComponent;
+  @ViewChild(FiltroComponent) filtroComp!: FiltroComponent;
+  @ViewChild(EntrevistaComponent) entrevistaComp!: EntrevistaComponent;
+  @ViewChild(EvaluacionesComponent) evaluacionComp!: EvaluacionesComponent;
 
   constructor(
     private router: Router,
@@ -55,6 +65,9 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
     this.fetchRHInfo();
   }
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.cargarDatosEnComponentes();
+    }, 0);
   }
   
   fetchRHInfo() {
@@ -162,8 +175,86 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/registro']);
   }
 
-  editarRegistro(index:number){
-    alert("En progreso!");
+  private cargarDatosEnComponentes() {
+    if (this.selectedOption === 1 && this.captacionComp) {
+      this.captacionComp.loadData(this.candidatoToEdit.captacion);
+    }
+  
+    if (this.selectedOption === 2 && this.filtroComp) {
+      this.filtroComp.loadData(this.candidatoToEdit.filtro);
+    }
+  
+    if (this.selectedOption === 3 && this.entrevistaComp) {
+      this.entrevistaComp.loadData(this.candidatoToEdit.segundaEntrevista);
+    }
+  
+    if (this.selectedOption === 4 && this.evaluacionComp) {
+      this.evaluacionComp.loadData(this.candidatoToEdit.evaluaciones);
+    }
+  }
+
+  editarRegistro(index: number) {
+    this.candidatoToEdit.mapCandidatoToComponents(this.candidatosList[index]);
+    console.log(this.candidatoToEdit);
+    this.editView = true;
+  
+    setTimeout(() => {
+      if (this.selectedOption === 1 && this.captacionComp) {
+        this.captacionComp.loadData(this.candidatoToEdit.captacion);
+      }
+  
+      if (this.selectedOption === 2 && this.filtroComp) {
+        this.filtroComp.loadData(this.candidatoToEdit.filtro);
+      }
+  
+      if (this.selectedOption === 3 && this.entrevistaComp) {
+        this.entrevistaComp.loadData(this.candidatoToEdit.segundaEntrevista);
+      }
+  
+      if (this.selectedOption === 4 && this.evaluacionComp) {
+        this.evaluacionComp.loadData(this.candidatoToEdit.evaluaciones);
+      }
+    }, 0);
+  }
+  
+  
+  btnPrev(){
+    if(this.selectedOption > 1){
+      this.selectedOption --;
+    }
+  }
+  btnNext(){
+    if(this.selectedOption < 4){
+      this.selectedOption ++;
+    }
+  }
+
+  closeEdit(){
+    this.editView = false;
+  }
+
+  onDataChange(data: any, section: string) {
+    switch (section) {
+      case 'captacion':
+        this.candidatoToEdit.captacion = data;
+        break;
+      case 'filtro':
+        this.candidatoToEdit.filtro = data;
+        break;
+      case 'segundaEntrevista':
+        this.candidatoToEdit.segundaEntrevista = data;
+        break;
+      case 'evaluaciones':
+        this.candidatoToEdit.evaluaciones = data;
+        break;
+      default:
+        console.error('Sección desconocida:', section);
+    }
+  }
+
+  saveEdit(){
+    this.updateCandidatoEdit();
+    this.editView = !this.editView;
   }
   msgEliminar(index:number){
     this.areUSure = true;
@@ -182,6 +273,26 @@ export class CandidatosComponent implements OnInit, AfterViewInit {
       }
     )
   }
+  updateCandidatoEdit(){
+    this.candidatoToEdit.captacion = this.captacionComp.data;
+    this.candidatoToEdit.filtro = this.filtroComp.data;
+    this.candidatoToEdit.segundaEntrevista = this.entrevistaComp.data;
+    this.candidatoToEdit.evaluaciones = this.evaluacionComp.data;
+    console.log(this.candidatoToEdit);
+  }
+
+  currentComp(index : number){
+    if(index === 1){
+      return this.captacionComp
+    } else if (index === 2){
+      return this.filtroComp
+    } else if (index === 3){
+      return this.entrevistaComp
+    } else if (index === 4){
+      return this.evaluacionComp
+    }
+  }
+
   cancelar(){
     this.areUSure = false;
   }

@@ -89,6 +89,7 @@ export class FormularioComponent implements OnInit, AfterViewInit {
    
   btnNext() {
     const currentComponent = this.getCurrentComponent();
+    console.log(currentComponent?.isCompleted);
     if (currentComponent && currentComponent.isCompleted) {
       this.saveCurrentSectionData();
       this.sectionsForm[this.currentPart - 1].checked = false;
@@ -131,10 +132,7 @@ export class FormularioComponent implements OnInit, AfterViewInit {
       console.log('Entro a la validacion para guardar datos');
       console.log(currentComponent.data);
     }
-    // console.log('Estado de los componentes hijos en el padre:')
-    // for(let hijo of this.sectionsForm){
-    //   console.log(hijo.dataComp)
-    // }
+    console.log(currentComponent);
   }
 
   async sendData() {

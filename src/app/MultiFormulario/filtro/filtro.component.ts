@@ -13,7 +13,8 @@ export class FiltroComponent implements OnInit {
   filtroForm !: FormGroup;
   isCompleted: boolean = false;
   progreso = 0;
-  @Output() progresoChange = new EventEmitter<number>()
+  @Output() progresoChange = new EventEmitter<number>();
+  @Output() dataChange = new EventEmitter<IFiltro>();
   private formKey = 'datosFiltro';
   escolaridadList = [
     'Primaria Terminada',
@@ -55,18 +56,25 @@ export class FiltroComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    const savedState = this.formState.getFormState(this.formKey);
-    if (savedState) {
-      this.filtroForm.patchValue(savedState);
-    } else {
-      this.filtroForm.patchValue(this.data);
+    this.loadData(this.data);
+    this.checkAllFieldsFilled();
+  }
+
+  onFormChange(){
+    this.dataChange.emit(this.data);
+  }
+
+  loadData(filtroData : IFiltro){
+    this.data = filtroData;
+    if(filtroData){
+      this.filtroForm.patchValue(filtroData);
     }
-
-    this.filtroForm.valueChanges.subscribe(() => {
-      this.saveFormState();
-      this.checkAllFieldsFilled();
-    });
-
+    this.filtroForm.valueChanges.subscribe(
+      () => {
+        this.saveFormState();
+        this.checkAllFieldsFilled();
+      }
+    );
     this.checkAllFieldsFilled();
   }
 
